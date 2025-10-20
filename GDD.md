@@ -1,7 +1,7 @@
 # 🎮 Game Design Document (GDD)
 ## Basic Info
-**Game Title:** Iron Horizon  
-**Team Name:** Ironcore Studios
+**Game Title:** Shattered Sector 
+**Team Name:** Null Directive Studios
 **Version:** 0.1
 **Date:** October 2025
 **Engine:** Unity  

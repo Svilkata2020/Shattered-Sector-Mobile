@@ -1,8 +1,8 @@
-=====================================
- IRON HORIZON — GAME CREDITS
-=====================================
+========================================
+ SHATTERED SECTOR MOBILE — GAME CREDITS
+========================================
 
-Developed by Ironcore Studios
+Developed by Null Directive Studios
 Version 0.1 — October 2025
 
 -------------------------------------
@@ -24,6 +24,9 @@ SOUND EFFECTS
 MUSIC
 • “<name>” by <person_to_credit> - <url> <license_type>
 
+TEXTURES
+• “<name>” by <person_to_credit> - <url> <license_type>
+
 TOOLS
 • Unity Engine
 • GitHub
@@ -32,7 +35,7 @@ TOOLS
 -------------------------------------
 LICENSE
 -------------------------------------
-© 2025 Ironcore Studios. All Rights Reserved.
+© 2025 Null Directive Studios. All Rights Reserved.
 External assets retain their original licenses.
 
 -------------------------------------
