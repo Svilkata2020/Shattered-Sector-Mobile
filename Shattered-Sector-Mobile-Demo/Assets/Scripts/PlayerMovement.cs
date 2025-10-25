@@ -3,43 +3,41 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 3f;
-    public float rotationSpeed = 100f;
+    public float rotationSpeed = 25f;
 
     private bool isMovingForward = false;
     private bool isMovingBackward = false;
     private bool isRotatingLeft = false;
     private bool isRotatingRight = false;
 
-    void Update()
-    {
-        // Forward/backward movement (relative to facing direction)
-        if (isMovingForward)
-        {
-            Debug.Log("Moving Forward");
-            transform.position += transform.forward * moveSpeed * Time.deltaTime;
-        }
+    private Rigidbody rb;
 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void FixedUpdate()
+    {
         if (isMovingBackward)
         {
-            Debug.Log("Moving Backward");
-            transform.position -= transform.forward * moveSpeed * Time.deltaTime;
+            StopMovingForward();
+            rb.linearVelocity = -transform.forward * moveSpeed;
         }
-
-        // Rotation around Y-axis
-        if (isRotatingLeft)
+        if (isMovingForward)
         {
-            Debug.Log("Rotating Left");
-            transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
+            StopMovingBackward();
+            rb.linearVelocity = transform.forward * moveSpeed;
         }
-
-        if (isRotatingRight)
+        if(isRotatingLeft)
         {
-            Debug.Log("Rotating Right");
-            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
+            StopRotatingRight();
+        }
+        if(isRotatingRight)
+        {
+            StopRotatingLeft();
         }
 
-        // Keep player anchored vertically (optional safeguard)
-        transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 
     // Movement controls
