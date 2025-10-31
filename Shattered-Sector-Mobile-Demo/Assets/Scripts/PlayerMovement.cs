@@ -1,9 +1,15 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 3f;
+    public float moveSpeed = 4f;
     public float rotationSpeed = 25f;
+    public float wheelRotationSpeed = 300f;
+
+    private float currentSpeed = 0f;
+    private float wheelRotationAmount = 0f;
+    private int directionFacing = 1;
 
     private bool isMovingForward = false;
     private bool isMovingBackward = false;
@@ -14,30 +20,58 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private GameObject top;
+    private GameObject[] wheels;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         top = GameObject.FindWithTag("Top");
+        wheels = GameObject.FindGameObjectsWithTag("Wheel");
+    }
+
+    void MoveTank(int direction, float changeToSpeed, float accelerationSpeed, bool wheelsAreRotating)
+    {
+        directionFacing = direction;
+        currentSpeed = Mathf.MoveTowards(currentSpeed, changeToSpeed, accelerationSpeed * Time.fixedDeltaTime);
+        rb.linearVelocity = directionFacing * transform.forward * currentSpeed;
+        if (wheelsAreRotating)
+        {
+            wheelRotationAmount = Mathf.MoveTowards(wheelRotationAmount, -direction * wheelRotationSpeed, accelerationSpeed * 75 * Time.fixedDeltaTime);
+        }
+        else
+        {
+            wheelRotationAmount = Mathf.MoveTowards(wheelRotationAmount, 0f, accelerationSpeed * 100 * Time.fixedDeltaTime);
+        }
+        foreach (GameObject wheel in wheels)
+        {
+            wheel.transform.rotation *= Quaternion.Euler(0f, 0f, wheelRotationAmount * Time.fixedDeltaTime);
+        }
     }
 
     void FixedUpdate()
     {
+        //handles tank movements and & checks for inputs
         if (isMovingBackward)
         {
+            
             StopMovingForward();
             StopRotatingRight();
             StopRotatingLeft();
-            rb.linearVelocity = -transform.forward * moveSpeed;
+            MoveTank(-1, moveSpeed, 2, true);
         }
         if (isMovingForward)
         {
             StopMovingBackward();
             StopRotatingRight();
             StopRotatingLeft();
-            rb.linearVelocity = transform.forward * moveSpeed;
+            MoveTank(+1, moveSpeed, 2, true);
+        }
+        if(!isMovingForward && !isMovingBackward)
+        {
+            MoveTank(directionFacing, 0f, 10, false);
         }
 
+        //handles tank rotation
         float rotationInput = 0f;
         if (isRotatingLeft)
         {
@@ -62,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
             rb.MoveRotation(rb.rotation * delta);
         }
 
+        //handles top rotation
         float topRotationInput = 0f;
         if (isRotatingTopLeft)
         {
@@ -80,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
             top.transform.rotation *= Quaternion.Euler(0f, topRotationInput * rotationSpeed * Time.fixedDeltaTime, 0f);
         }
 
+        //keep player on ground
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
     }
 

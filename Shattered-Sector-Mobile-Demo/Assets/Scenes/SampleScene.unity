@@ -2677,6 +2677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   moveSpeed: 3
   rotationSpeed: 20
+  wheelRotationSpeed: 130
 --- !u!1 &2092296103
 GameObject:
   m_ObjectHideFlags: 0
