@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = directionFacing * transform.forward * currentSpeed;
         if (wheelsAreRotating)
         {
-            wheelRotationAmount = Mathf.MoveTowards(wheelRotationAmount, -direction * wheelRotationSpeed, accelerationSpeed * 75 * Time.fixedDeltaTime);
+            wheelRotationAmount = Mathf.MoveTowards(wheelRotationAmount, direction * wheelRotationSpeed, accelerationSpeed * 75 * Time.fixedDeltaTime);
         }
         else
         {
@@ -57,14 +57,14 @@ public class PlayerMovement : MonoBehaviour
             StopMovingForward();
             StopRotatingRight();
             StopRotatingLeft();
-            MoveTank(-1, moveSpeed, 2, true);
+            MoveTank(-1, moveSpeed, 1.5f, true);
         }
         if (isMovingForward)
         {
             StopMovingBackward();
             StopRotatingRight();
             StopRotatingLeft();
-            MoveTank(+1, moveSpeed, 2, true);
+            MoveTank(+1, moveSpeed, 1.5f, true);
         }
         if(!isMovingForward && !isMovingBackward)
         {
