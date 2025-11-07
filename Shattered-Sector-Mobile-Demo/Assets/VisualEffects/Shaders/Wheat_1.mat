@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grass_Falling
+  m_Name: Wheat_1
   m_Shader: {fileID: -6465566751694194690, guid: 92d55f4918609ac4b8ba93e8c3c4fdbf, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -46,7 +46,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Color:
-        m_Texture: {fileID: 2800000, guid: e1b6b18c5ce42814980bec37ba7af34f, type: 3}
+        m_Texture: {fileID: 2800000, guid: 22a9795215bf11f4191ae2ff447ad5d1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:

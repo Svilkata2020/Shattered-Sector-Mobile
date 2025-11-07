@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Renderer leftTrackRenderer;
+    public Renderer rightTrackRenderer;
+    public float trackScrollSpeed = 0.5f;
+
+    private float leftTrackOffset = 0f;
+    private float rightTrackOffset = 0f;
     public float moveSpeed = 4f;
     public float rotationSpeed = 25f;
     public float wheelRotationSpeed = 300f;
@@ -44,16 +50,18 @@ public class PlayerMovement : MonoBehaviour
         }
         foreach (GameObject wheel in wheels)
         {
-            wheel.transform.rotation *= Quaternion.Euler(0f, 0f, wheelRotationAmount * Time.fixedDeltaTime);
+            float sideSign = (wheel.transform.localPosition.x < 0f) ? -1f : 1f;
+            wheel.transform.rotation *= Quaternion.Euler(0f, 0f, sideSign * wheelRotationAmount * Time.fixedDeltaTime);
         }
     }
 
     void FixedUpdate()
     {
-        //handles tank movements and & checks for inputs
+        float scrollAmount = (currentSpeed / moveSpeed) * trackScrollSpeed * Time.fixedDeltaTime;
         if (isMovingBackward)
         {
-            
+            leftTrackOffset += scrollAmount;
+            rightTrackOffset += scrollAmount;
             StopMovingForward();
             StopRotatingRight();
             StopRotatingLeft();
@@ -61,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (isMovingForward)
         {
+            leftTrackOffset -= scrollAmount;
+            rightTrackOffset -= scrollAmount;
             StopMovingBackward();
             StopRotatingRight();
             StopRotatingLeft();
@@ -70,11 +80,11 @@ public class PlayerMovement : MonoBehaviour
         {
             MoveTank(directionFacing, 0f, 10, false);
         }
-
-        //handles tank rotation
         float rotationInput = 0f;
         if (isRotatingLeft)
         {
+            leftTrackOffset += scrollAmount;
+            rightTrackOffset -= scrollAmount;
             StopMovingForward();
             StopMovingBackward();
             StopRotatingRight();
@@ -83,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isRotatingRight)
         {
+            leftTrackOffset -= scrollAmount;
+            rightTrackOffset += scrollAmount;
             StopMovingForward();
             StopMovingBackward();
             StopRotatingLeft();
@@ -96,7 +108,6 @@ public class PlayerMovement : MonoBehaviour
             rb.MoveRotation(rb.rotation * delta);
         }
 
-        //handles top rotation
         float topRotationInput = 0f;
         if (isRotatingTopLeft)
         {
@@ -115,17 +126,16 @@ public class PlayerMovement : MonoBehaviour
             top.transform.rotation *= Quaternion.Euler(0f, topRotationInput * rotationSpeed * Time.fixedDeltaTime, 0f);
         }
 
-        //keep player on ground
         transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        leftTrackRenderer.material.mainTextureOffset = new Vector2(0, leftTrackOffset);
+        rightTrackRenderer.material.mainTextureOffset = new Vector2(0, rightTrackOffset);
     }
 
-    // Movement controls
     public void StartMovingForward() => isMovingForward = true;
     public void StopMovingForward() => isMovingForward = false;
     public void StartMovingBackward() => isMovingBackward = true;
     public void StopMovingBackward() => isMovingBackward = false;
 
-    // Rotation controls
     public void StartRotatingLeft() => isRotatingLeft = true;
     public void StopRotatingLeft() => isRotatingLeft = false;
     public void StartRotatingRight() => isRotatingRight = true;
